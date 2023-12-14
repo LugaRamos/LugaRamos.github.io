@@ -1,44 +1,62 @@
-/* Adicione estilos conforme necessário */
+.background-image {
+    background-image: url('assets/fundo.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
 
 .card {
-    margin-right: 20px; /* Adicione uma margem para separar os cards */
-    flex-basis: calc(33.33% - 20px); /* Calcula a largura de cada card para 33.33% menos a margem direita */
-    box-sizing: border-box; /* Garante que a margem não aumente a largura total */
+    margin-right: 20px;
+    flex-basis: calc(33.33% - 20px);
+    box-sizing: border-box; 
+    border: 9px solid white
 }
 
 .navbar {
     margin-bottom: 20px;
+    font-size: large;
+}
+
+.custom-btn {
+    padding: 10px 10px;
+    background-color: #1c1e20; 
+    color: #000; 
+    border-radius: 10px;
+    border: solid #1c1e20;
+}
+
+.logo {
+    width: 5%;
 }
 
 footer {
-    background-color: #f8f9fa;
-    padding: 20px 0;
+    background-color: #0e07006c;
+    padding: 10px 10px;
+    font-size: large;
+    color: white;
 }
 
-/* Estilo para o contêiner principal dos cards */
 #main-container {
     display: flex;
-    flex-wrap: wrap; /* Permite que os cards quebrem para a próxima linha se não houver espaço suficiente */
+    flex-wrap: wrap;
 }
 
-/* Estilos para telas menores (como dispositivos móveis) */
 @media (max-width: 767px) {
     .card {
-        flex-basis: 100%; /* Cards ocupam 100% da largura em telas menores */
-        margin-right: 0; /* Nenhuma margem à direita para cards em telas menores */
+        flex-basis: 100%;
+        margin-right: 0;
     }
 }
 
-/* Estilos para a barra de navegação em telas menores */
 @media (max-width: 767px) {
     .navbar-nav {
-        flex-direction: column; /* Itens da barra de navegação empilhados em telas menores */
+        flex-direction: column;
     }
 }
 
-/* Estilos para cards em telas menores */
 @media (max-width: 767px) {
     .card {
-        margin-bottom: 10px; /* Adicione uma margem inferior para separar os cards em telas menores */
+        margin-bottom: 10px;
     }
 }

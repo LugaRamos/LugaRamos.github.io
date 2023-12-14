@@ -5,29 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="styles.css">
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
-    
-    <title>Cinéfolo em Cena</title>
+
+    <link rel="shortcut icon" href="assets/filme.png" type="image/x-icon"/>
+    <title>Cinéfolo</title>
 </head>
-<body>
+<body class="background-image">
 
     <header>
         <nav class="navbar navbar-dark bg-dark">
-            <span class="navbar-brand mb-0 h1">Cinéfolo em Cena</span>
+            <div class="d-flex align-items-center"> 
+                <span class="navbar-brand mb-0 h1">Cinéfolo</span>
+                <img class="logo" src="assets/logo.png" alt="Logo Cinéfolo">
+            </div>
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="#" onclick="loadMovies()">Filmes</a>
+                    <a class="nav-link btn custom-btn" href="#" onclick="loadForm()">Novo Filme</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#" onclick="loadForm()">Novo Filme</a>
-                </li>
-            </ul>
+            </ul>                                
         </nav>
     </header>
 
-    <main class="container mt-3" id="main-container">
-        <!-- Cards de filmes serão exibidos aqui -->
-    </main>
+    <main class="container mt-3" id="main-container"></main>
 
     <div class="modal fade" id="movieFormModal" tabindex="-1" role="dialog" aria-labelledby="movieFormModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -39,7 +37,6 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <!-- Formulário para adicionar novo filme -->
                     <form id="movieForm">
                         <div class="form-group">
                             <label for="title">Título:</label>
@@ -59,6 +56,32 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="editMovieFormModal" tabindex="-1" role="dialog" aria-labelledby="editMovieFormModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editMovieFormModalLabel">Editar Filme</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="editMovieForm">
+                        <div class="form-group">
+                            <label for="edit-overview">Sinopse:</label>
+                            <textarea class="form-control" id="edit-overview" rows="3" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-vote-average">Avaliação:</label>
+                            <input type="number" class="form-control" id="edit-vote-average" step="0.1" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <footer class="mt-5 text-center">
         <p>Explore o mundo do cinema!</p>

@@ -16,7 +16,7 @@ function displayMovies(movies) {
     mainContainer.innerHTML = '';
 
     if (movies.length === 0) {
-        showAlert('Nenhum filme encontrado.', 'info');
+        alert('Nenhum filme encontrado.', 'info');
         return;
     }
 
@@ -41,28 +41,28 @@ function displayMovies(movies) {
 
         // Adiciona a imagem do poster
         const posterImage = document.createElement('img');
-        posterImage.classList.add('card-img-top'); // Adiciona a classe para garantir que a imagem fique no topo
-        posterImage.src = movie.poster; // Certifique-se de que 'movie' tenha uma propriedade 'poster' com o URL do poster
-        posterImage.alt = `${movie.title} Poster`; // Adiciona um texto alternativo para acessibilidade
+        posterImage.classList.add('card-img-top');
+        posterImage.src = movie.poster;
+        posterImage.alt = `${movie.title} Poster`; 
 
         const deleteButton = document.createElement('button');
         deleteButton.classList.add('btn', 'btn-danger', 'btn-sm');
         deleteButton.textContent = 'Excluir';
         deleteButton.onclick = () => deleteMovie(movie.id);
 
+        const editButton = document.createElement('button');
+        editButton.classList.add('btn', 'btn-primary', 'btn-sm', 'mr-2', 'ml-2');
+        editButton.textContent = 'Editar';
+        editButton.onclick = () => openEditForm(movie);
+
         cardBody.appendChild(title);
         cardBody.appendChild(overview);
         cardBody.appendChild(voteAverage);
-
-        // Adiciona a imagem do poster antes dos outros elementos
         movieCard.appendChild(posterImage);
 
         cardBody.appendChild(deleteButton);
-
-        // Adiciona o corpo do cartão depois da imagem
+        cardBody.appendChild(editButton);
         movieCard.appendChild(cardBody);
-
-        // Adiciona o cartão à área principal
         mainContainer.appendChild(movieCard);
     });
 }
@@ -79,18 +79,23 @@ function createMovie() {
     const voteAverage = document.getElementById('vote-average').value;
 
     if (!title || !overview || !voteAverage) {
-        showAlert('Preencha todos os campos.', 'danger');
+        alert('Preencha todos os campos.', 'danger');
         return;
     }
 
-    const apiKey = '8a12ca07'; // Substitua com sua chave de API TMDb
-    const apiUrl = `http://www.omdbapi.com/?t=${(title)}&apikey=${apiKey}`; // Use encodeURIComponent para garantir que o título seja codificado corretamente
+    if (isNaN(voteAverage) || voteAverage < 1 || voteAverage > 10) {
+        alert('A avaliação deve estar entre 1 e 10.', 'danger');
+        return;
+    }
+
+    const apiKey = '8a12ca07';
+    const apiUrl = `http://www.omdbapi.com/?t=${(title)}&apikey=${apiKey}`;
 
     fetch(apiUrl)
         .then(response => response.json())
         .then(data => {
-            if (data.Response === 'True') { // Verifica se a resposta da API é bem-sucedida
-                const poster = data.Poster || ''; // Obtenha o URL do poster
+            if (data.Response === 'True') {
+                const poster = data.Poster || '';
 
                 const newMovie = {
                     id: moviesData.length + 1,
@@ -102,19 +107,16 @@ function createMovie() {
 
                 moviesData.push(newMovie);
                 saveMovies(moviesData);
-                loadMovies(); // Atualiza a exibição dos filmes
+                loadMovies();
 
-                // Exibe uma mensagem de sucesso e fecha o modal
-                showAlert('Filme cadastrado com sucesso!', 'success');
-                $('#movieFormModal').modal('hide'); // Fecha o modal de formulário
+                alert('Filme cadastrado com sucesso!', 'success');
+                $('#movieFormModal').modal('hide'); 
 
-                // Limpa os valores dos campos do formulário
                 document.getElementById('title').value = '';
                 document.getElementById('overview').value = '';
                 document.getElementById('vote-average').value = '';
             } else {
-                // Exibe uma mensagem de erro se a resposta da API não for bem-sucedida
-                showAlert('Erro ao obter informações do filme. Verifique o título e tente novamente.', 'danger');
+                alert('Erro ao obter informações do filme. Verifique o título e tente novamente.', 'danger');
             }
         })
         .catch(error => {
@@ -123,42 +125,49 @@ function createMovie() {
 }
 
 
-
-function showAlert(message, type) {
-    const alertContainer = document.createElement('div');
-    alertContainer.classList.add('alert', `alert-${type}`, 'alert-dismissible', 'fade', 'show');
-    alertContainer.setAttribute('role', 'alert');
-
-    const alertMessage = document.createTextNode(`${type.toUpperCase()}: ${message}`);
-
-    const closeButton = document.createElement('button');
-    closeButton.classList.add('close');
-    closeButton.setAttribute('type', 'button');
-    closeButton.setAttribute('data-dismiss', 'alert');
-    closeButton.setAttribute('aria-label', 'Close');
-
-    const closeIcon = document.createElement('span');
-    closeIcon.setAttribute('aria-hidden', 'true');
-    closeIcon.innerHTML = '&times;';
-
-    closeButton.appendChild(closeIcon);
-    alertContainer.appendChild(alertMessage);
-    alertContainer.appendChild(closeButton);
-
-    const mainContainer = document.getElementById('main-container');
-    mainContainer.insertBefore(alertContainer, mainContainer.firstChild);
-
-    setTimeout(() => {
-        // Remove o alerta após alguns segundos (tempo de exibição)
-        alertContainer.remove();
-    }, 5000); // 5000 milissegundos = 5 segundos
-}
-
 function deleteMovie(movieId) {
     moviesData = moviesData.filter(movie => movie.id !== movieId);
     saveMovies(moviesData);
-    loadMovies(); // Atualiza a exibição dos filmes
+    loadMovies();
 }
+
+function openEditForm(movie) {
+    document.getElementById('edit-overview').value = movie.overview;
+    document.getElementById('edit-vote-average').value = movie.vote_average;
+
+    $('#editMovieFormModal').modal('show');
+
+    document.getElementById('editMovieForm').onsubmit = function(event) {
+        event.preventDefault();
+        updateMovie(movie.id);
+        $('#editMovieFormModal').modal('hide');
+    };
+}
+
+function updateMovie(movieId) {
+    const editedOverview = document.getElementById('edit-overview').value;
+    const editedVoteAverage = parseFloat(document.getElementById('edit-vote-average').value);
+
+    // Encontra o filme na lista e atualiza as informações
+    moviesData = moviesData.map(movie => {
+        if (movie.id === movieId) {
+            return {
+                ...movie,
+                overview: editedOverview,
+                vote_average: editedVoteAverage,
+            };
+        } else {
+            return movie;
+        }
+    });
+
+    saveMovies(moviesData);
+    loadMovies();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    loadMovies();
+});
 
 
 
