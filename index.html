@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles.css">
+    
+    <title>Cinéfolo em Cena</title>
+</head>
+<body>
+
+    <header>
+        <nav class="navbar navbar-dark bg-dark">
+            <span class="navbar-brand mb-0 h1">Cinéfolo em Cena</span>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="loadMovies()">Filmes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="loadForm()">Novo Filme</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container mt-3" id="main-container">
+        <!-- Cards de filmes serão exibidos aqui -->
+    </main>
+
+    <div class="modal fade" id="movieFormModal" tabindex="-1" role="dialog" aria-labelledby="movieFormModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="movieFormModalLabel">Novo Filme</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Formulário para adicionar novo filme -->
+                    <form id="movieForm">
+                        <div class="form-group">
+                            <label for="title">Título:</label>
+                            <input type="text" class="form-control" id="title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="overview">Sinopse:</label>
+                            <textarea class="form-control" id="overview" rows="3" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="vote-average">Avaliação:</label>
+                            <input type="number" class="form-control" id="vote-average" step="0.1" required>
+                        </div>
+                        <button type="button" class="btn btn-primary" onclick="createMovie()">Salvar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="mt-5 text-center">
+        <p>Explore o mundo do cinema!</p>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="scripts.js"></script>
+</body>
+</html>
